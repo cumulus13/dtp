@@ -1,0 +1,55 @@
+body {
+  background-color: #181A1B;
+}
+
+#app {
+  background-color: #181A1B;
+  /*padding-top: 100px;*/
+  margin-top: 100px;
+  height: 800px;
+  color: cyan;
+}
+
+#foto_preview {
+  width: 200px;
+  height: 200px;
+}
+
+table.bordered {
+  border-collapse: collapse;
+  border: 2px solid black;
+  width: 100%;
+}
+
+table.bordered td {
+  border: 1px solid black;
+  padding: 5px;
+}
+
+td input[type="text"] {
+  width: 98%;
+  padding: 0;
+  margin: 0;
+  /*border: thin;*/
+  border: 1px solid black;
+  outline: none;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+  color: #555;
+}
+
+.custom-file-upload:hover {
+  background-color: #e6e6e6;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
