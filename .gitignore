@@ -24,7 +24,6 @@ running*.py
 covers/
 mpdlogo.jfif
 icon1.png 
-*.html
 racaty.py
 js.py
 downloader.py

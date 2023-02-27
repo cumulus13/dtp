@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-Ddj8X9dlbiy+0n0zQZ69rcLZbGK/SRTKwZ4I0yABp8yV9eJ0afDwdL6UeI6U20RiU5KylwOv5ue5x5yIc9QWhQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+	 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+	 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+	 <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock %}
+{% block content %}
+  <h1>Biography</h1>
+  <form method="POST" enctype="multipart/form-data" id="myForm">
+    {% csrf_token %}
+    <table id="table-bio">
+      <thead>
+      	<tr>
+      		<td colspan="5"></td>
+      	</tr>
+      </thead>
+      <tbody id="biodata">
+      </thead>
+      <!-- Table 1 -->
+      <tr>
+        <td>Nama</td>
+        {% if bio.nama %}
+        	<td colspan="4"> : <input type="text" name="nama" value="{{ bio.nama }}" disabled style="color:yellow;" id="nama"></td>
+        {% else %}
+        	<td colspan="4"> : <input type="text" name="nama" value="{{ bio.nama }}" id="nama"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <td>Alamat</td>
+        {% if bio.alamat %}
+        	<td colspan="4"> : <input type="text" name="alamat" value="{{ bio.alamat }}" disabled style="color:yellow;" id="alamat"></td>
+        {% else %}
+        	<td colspan="4"> : <input type="text" name="alamat" value="{{ bio.alamat }}" id="alamat"></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <td>No Ktp</td>
+        {% if bio.ktp %}
+        	<td colspan="4"> : <input type="text" name="no_ktp" value="{{ bio.ktp }}" disabled style="color:yellow;" id="no_ktp"></td>
+        {% else %}
+        	<td colspan="4"> : <input type="text" name="no_ktp" value="{{ bio.ktp }}" id="no_ktp"></td>
+        {% endif %}
+      </tr>
+      </tbody>
+
+      <tr>
+      	<td colspan="5">
+      		<hr/>
+      	</td>
+      </tr>
+
+      <!-- Table 2 -->
+      <tr class="bordered">
+        <td>Pendidikan</td>
+        <td>:</td>
+        <!-- <td colspan="3"></td> -->
+        <td colspan="3"></td>
+      </tr>
+      <thead>
+	      <tr class="bordered">
+	      	<td>Nama Sekolah / Universitas</td>
+	      	<td>Jurusan</td>
+	      	<td>Tahun Masuk</td>
+	      	<td>Tahun Lulus</td>
+	      	<td>Action</td>
+	      </tr>
+      </thead>
+      <tbody class="pendidikan">
+	      <tr class="bordered">
+	      	{% comment %}
+	      	{% for pendidikan in bio.pendidikan_set.all %}
+	      	{% endcomment %}
+	      	{% for pendidikan in pendidikan_list %}
+	        <td><input type="text" name="nama_sekolah[]" value="{{ pendidikan.sekolah }}" disabled style="color: yellow;"></td>
+	        <td><input type="text" name="jurusan[]" value="{{ pendidikan.jurusan }}" disabled style="color: yellow;"></td>
+	        <td><input type="text" name="tahun_masuk[]" value="{{ pendidikan.masuk }}" id="tahun_masuk" disabled style="color: yellow;"></td>
+	        <td><input type="text" name="tahun_lulus[]" value="{{ pendidikan.lulus }}" id="tahun_lulus" disabled style="color: yellow;"></td>
+	        <td>
+	        	<button type="button" class="btn btn-sm btn-warning add-btn">Add</button>
+	        	<button type="button" class="btn btn-sm btn-primary me-0 edit-btn">Edit</button>
+	            <button type="button" class="btn btn-success btn-sm save-btn">Save</button>
+	        	<button type="button" class="btn btn-sm btn-danger del-btn">Delete</button>
+	      	</td>
+	      </tr>
+
+	      {% empty %}
+	      <tr id="notext_pendidikan">
+	        <td colspan="4" class="text-center" >Belum ada pendidikan</td>
+	        <td>
+	        	<button type="button" class="btn btn-sm btn-warning add-btn">Add</button>
+	        	<!-- <button class="btn btn-sm btn-primary me-2 edit-btn">Edit</button> -->
+	        	<button type="button" class="btn btn-sm btn-danger del-btn">Delete</button>
+	      	</td>
+	      </tr>
+	      {% endfor %}
+      </tbody>
+      <tr>
+      	<td colspan="5">
+      		<hr/>
+      	</td>
+      </tr>
+
+      <!-- Table 3 -->
+      <tr class="bordered">
+        <td>Pengalaman Kerja</td>
+        <td>:</td>
+        <!-- <td colspan="3"></td> -->
+        <td colspan="3"></td>
+      </tr>
+      <thead>
+      <tr class="bordered">
+      	<td>Perusahaan</td>
+      	<td>Jabatan</td>
+      	<td>Tahun</td>
+      	<td>Keterangan</td>
+      	<td>Action</td>
+      </tr>
+      </thead>
+      <tbody class="pengalaman">
+      <tr class="bordered">
+      	{% comment %}
+      	{% for pengalaman in bio.pengalaman_set.all %}
+      	{% endcomment %}
+      	{% for pengalaman_kerja in pengalaman_kerja_list %}
+        <td><input type="text" name="nama_perusahaan[]" value="{{ pengalaman_kerja.perusahaan }}" id="nama_sekolah" disabled style="color: yellow;"></td>
+        <td><input type="text" name="jabatan[]" value="{{ pengalaman_kerja.jabatan }}" id="jabatan" disabled style="color: yellow;"></td>
+        <td><input type="text" name="tahun[]" value="{{ pengalaman_kerja.tahun }}" id="tahun" disabled style="color: yellow;"></td>
+        <td><input type="text" name="keterangan[]" value="{{ pengalaman_kerja.ket }}" id="keterangan" disabled style="color: yellow;"></td>
+        <td>
+        	<button type="button" class="btn btn-sm btn-warning add-btn">Add</button>
+        	<button type="button" class="btn btn-sm btn-primary me-0 edit-btn">Edit</button>
+            <button type="button" class="btn btn-success btn-sm save-btn">Save</button>
+        	<button type="button" class="btn btn-sm btn-danger del-btn">Delete</button>
+      	</td>
+      </tr>
+
+      {% empty %}
+      <tr id="notext_pengalaman">
+        <td colspan="4" class="text-center">Belum ada pengalaman</td>
+        <td>
+        	<button type="button" class="btn btn-sm btn-warning add-btn">Add</button>
+        	<!-- <button class="btn btn-sm btn-primary me-2 edit-btn">Edit</button> -->
+        	<button type="button" class="btn btn-sm btn-danger del-btn">Delete</button>
+      	</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+
+      <tr>
+      	<td colspan="5">
+      		<hr/>
+      	</td>
+      </tr>
+      <!-- Table 4 -->
+      <tr>
+        <td>Foto</td>
+        <td>:</td>
+        <td colspan="3"></td>
+     </tr>
+     <tr>
+        <td>
+          {% if bio.foto %}
+          <img src="{{ bio.foto.url }}" alt="Foto" style="width: 200px; height: 200px;" id="foto_preview">
+          <button class="btn btn-sm btn-danger change-btn">Change</button>
+          <input id="file-upload" type="file" name="foto" style="display:none">
+        </td>
+          {% else %}
+        <td>
+          	<!-- <input type="file" name="foto" id="button_foto"> -->
+          	<div class="mb-3">
+		    	<label for="file-upload" class="custom-file-upload">
+				  Upload Foto
+				  <input id="file-upload" type="file" name="foto">
+				</label>
+		  	</div>
+		</td>
+		<td>
+			<img src="{% static 'images/person.png' %}" id="foto_preview" alt="">
+		</td>
+        {% endif %}
+        
+        <td colspan="4"></td>
+      </tr>
+    </table>
+
+    <button type="submit" id="submitBtn" class="btn btn-success">Submit</button>
+    {% if bio.nama %}
+    	<button type="button" id="new-btn" class="btn btn-info new-btn">New</button>
+    {% else %}
+    	<button type="button" id="new-btn" style="display: none;" class="btn btn-info new-btn">New</button>
+    {% endif %}
+  </form>
+
+{% endblock %}
+
+{% block js %}
+	<!--script type="text/javascript" src="https://code.jquery.com/jquery-3.6.3.slim.min.js"></script-->
+	<script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" src="//code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+	<!--script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script-->
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="{% static 'js/index1.js' %}"></script>
+{% endblock %}

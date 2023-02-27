@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Formulir</div>
+                <div class="card-body">
+                    <form @submit.prevent="submitForm" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="nama">Nama:</label>
+                            <input type="text" class="form-control" id="nama" name="nama" v-model="formData.nama" placeholder="Masukkan nama">
+                            <div class="invalid-feedback" v-if="!isNamaValid">
+                                Nama harus diisi.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="alamat">Alamat:</label>
+                            <input type="text" class="form-control" id="alamat" name="alamat" v-model="formData.alamat" placeholder="Masukkan alamat">
+                            <div class="invalid-feedback" v-if="!isAlamatValid">
+                                Alamat harus diisi.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ktp">KTP:</label>
+                            <input type="text" class="form-control" id="ktp" name="ktp" v-model="formData.ktp" placeholder="Masukkan nomor KTP">
+                            <div class="invalid-feedback" v-if="!isKtpValid">
+                                Nomor KTP harus diisi.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pendidikan">Pendidikan:</label>
+                            <input type="text" class="form-control" id="pendidikan" name="pendidikan" v-model="formData.pendidikan" placeholder="Masukkan pendidikan terakhir">
+                            <div class="invalid-feedback" v-if="!isPendidikanValid">
+                                Pendidikan terakhir harus diisi.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Sekolah / Universitas</th>
+                                        <th>Jurusan</th>
+                                        <th>Tahun Masuk</th>
+                                        <th>Tahun Lulus</th>
+                                        <th>
+                                            <button type="button" class="btn btn-success btn-sm" @click="addSekolah()">Tambah</button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item, index) in formData.sekolah">
+                                        <td>
+                                            <input type="text" class="form-control" v-model="formData.sekolah[index].nama" placeholder="Masukkan nama sekolah/universitas">
+                                            <div class="invalid-feedback" v-if="!isSekolahValid(index)">
+                                                Nama sekolah/universitas harus diisi.
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" v-model="formData.sekolah[index].jurusan" placeholder="Masukkan jurusan">
+                                            <div class="invalid-feedback" v-if="!isJurusanValid(index)">
+                                                Jurusan harus diisi.
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" v-model="formData.sekolah[index].tahun_masuk" placeholder="Tahun masuk">
+                                            <div class="invalid-feedback" v-if="!isTahunMasukValid(index)">
+                                                Tahun masuk harus diisi dan berupa angka.
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" v-model="formData.sekolah[index].tahun_lulus" placeholder="Tahun lulus">
+                                            <div class="invalid-feedback" v-if="!isTahunLulusValid(index)">
+                                                Tahun lulus harus diisi dan berupa angka.
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm" @click="removeSekolah(index)">Hapus</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <label for="upload">Unggah File:</label>
+                            <input type="file" id="upload" name="upload" class="form-control-file" @change="handleFileUpload">
+                            <div class="mt-2">
+                                <a :href="fileUrl" target="_blank" v-if="fileUrl">Lihat file</a>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" :disabled="!isFormValid || isSubmitting">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
